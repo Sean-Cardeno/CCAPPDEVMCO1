@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+header {
+    position: relative;
+    top: 0;
+    width: 100%;
+    padding: 30px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-logo-title .logo img {
+    width: 50px;
+    height: auto;
+}
+
+.header-logo-title {
+    display: flex;
+    align-items: center;
+}
+
+.header-logo-title h2 {
+    margin-left: 10px;
+}
+
+header .navigation a {
+    color: #000;
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding: 2px 15px;
+    border-radius: 20px;
+    transition: 0.3s;
+    transition-property: background;
+}
+
+header .navigation a:not(:last-child) {
+    margin-right: 30px;
+}
+
+header .navigation a:hover {
+    background: #fff;
+}
+
+body {
+    background-color: rgb(231, 178, 31);
+    /*: linear-gradient(to right, rgb(231, 178, 31), rgb(43, 14, 175));*/
+}
+
+.content-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: start;
+    width: 100%;
+}
+
+.main-content {
+    flex: 1;
+    margin: 60px 50px 50px 100px;
+    width: 250px;
+}
+
+.main-content .info h2 {
+    color: black;
+    font-size: 50px;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 2px;
+    line-height: 60px;
+    margin-bottom: 30px;
+}
+
+.main-content .info h2 subtitle {
+    font-style: h2;
+    color: #fff;
+    font-size: 50px;
+    font-weight: 600px;
+}
+
+.main-content .info p {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 40px;
+}
+
+.main-content .info li {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+
+/*section for the thing*/
+
+.login-section {
+    flex: 0.2;
+    margin: 150px 100px 60px 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+
+.login-container {
+    width: 350px;
+    height: 330px;
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    border: 1px solid #fff;
+}
+
+.login-container::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: -1;
+    border-radius: 10px;
+}
+
+
+.login-box h2 {
+    margin-top: 10px;
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+}
+
+input {
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    font-size: 13px;
+}
+
+textarea {
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    font-size: 13px;
+}
+
+textarea::placeholder {
+    color: #fff;
+}
+
+textarea:focus {
+    outline: none;
+}
+
+
+input::placeholder {
+    color: #fff;
+}
+
+input:focus {
+    outline: none;
+}
+
+.options {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    font-size: 12px;
+    color: white;
+}
+
+.options input {
+    margin-right: 5px;
+    margin-top: 0px;
+}
+
+.options a {
+    text-decoration: none;
+    color: white;
+    margin-left: auto;
+}
+
+button {
+    background: #fff;
+    color: black;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+button:hover {
+    background: transparent;
+    color: white;
+    outline: 1px solid #fff;
+}
+
+.login-box form p {
+    font-size: 12px;
+    color: #fff;
+    margin-top: 0;
+}
+
+.login-box {
+    max-width: 300px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    height: 20px;
+}
+
+.form-field {
+    position: relative;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: rgb(231, 178, 31);
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    border-radius: 10px;
+}
+
+.modal-content ul {
+    padding-left: 20px;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

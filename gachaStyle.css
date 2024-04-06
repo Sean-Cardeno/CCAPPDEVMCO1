@@ -1,0 +1,287 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+:root {
+    --border: #A7A7A7;
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    margin-left: 5vw;
+}
+
+a {
+    color: #412234;
+    font-style: normal;
+    text-decoration: none;
+  }
+
+.top{
+    display: flex;
+    width: 95%;
+}
+
+.titleHolder {
+    margin: 0;
+    
+    width: 20%;
+    height: 5%;
+
+}
+
+.title {
+    font-weight: bold;
+    font-size: 32px;
+    color: #412234;
+}
+
+.buttonHolder {
+    margin: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around; 
+    align-items: center;
+}
+
+.button {
+    width: 9vw;
+    height: 6vh;
+    border: 2px #412234;
+    background-color: #412234;
+    border-style: solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3vh;
+    z-index: 1;
+    position: relative;
+}
+
+.button:hover {
+    border: 2px var(--border);
+    border-style: solid;
+    background-color: var(--border);
+    transition: 0.2s;
+}
+
+
+.gacha {
+    border: 2px var(--border);
+    border-style: solid;
+    background-color: var(--border);
+}
+
+.clickable {
+    position: absolute;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+}
+
+
+.buttonText {
+    position: absolute;
+    font-size: 24px;
+    color: white;
+    z-index: 2;
+}
+
+.mainDiv {
+    margin: 0;
+    margin-top: 3vh;
+    height: 80vh;
+    width: 95%;
+    border: 2px var(--border);
+    border-style: solid;
+    background-color: rgb(255, 230, 176);
+    background-image: url(Banner.png);
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position-x: -10px;
+    border-radius: 5vh;
+    box-shadow: 0px 4px 10px -4px #C1ACBA;
+
+}
+
+.oneRoll {
+    width: 15vw;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    border-radius: 5vh;
+    align-items: center;
+    font-size: 24px;
+    color: #2e4052;
+    font-weight: bold;
+    border: 2px var(--border);
+    border-style: solid;
+
+    position: relative;
+    left: 70vw;
+    top: 65vh;
+    background-color: rgb(255, 255, 255);
+}
+
+.oneRoll:hover {
+    background-color: rgb(134, 134, 134);
+}
+
+.oneRoll:active{
+    background-color: rgb(134, 134, 134);
+    color: #ffc857;
+}
+
+
+.bannerLabel {
+    display: flex;
+    border: 2px #2e4052cc;
+    border-radius: 1vh;
+    border-style: solid;
+    width: 15vw;
+    height: 10vh;
+    background-color: #2e4052cc;
+    color: #ffc857;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    left:30vw;
+    top:55vh;
+    font-size: 24px;
+    
+}
+
+.reward {
+    margin: 0;
+    border: 2px #2e4052cc;
+    border-radius: 35vh;
+    border-style: solid;
+    width: 70vh;
+    height: 70vh;
+    color: white;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+
+    position: absolute;
+    font-size: 24px;
+    display: none;
+    
+}
+
+.oneStar {
+    background-color: rgb(172, 172, 172);
+}
+
+.twoStar {
+    background-color: rgb(60, 202, 72);
+    
+}
+
+.threeStar {
+    background-color: rgb(69, 60, 202);
+}
+
+.fourStar {
+    background-color: rgb(102, 42, 170);
+}
+
+.fiveStar {
+    background-color: rgb(190, 35, 48);
+}
+
+
+.currency{
+    position : fixed;
+    top:14vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    width: 120px;
+    height: 50px;
+    border: var(--border) solid 2px;
+    border-radius: 25px;
+    background-color:#412234;
+    color: white;   
+    z-index: 5;
+}
+
+#rolls{
+    left:80vw;
+}
+
+#credits{
+    left:87.5vw;
+}
+
+
+#profilePop{
+    position : fixed;
+    display: none;
+    top:14vh;
+    left: 25vw;
+    justify-content: center;
+    align-items: center;    
+    width: 50vw;
+    height: 50vh;
+    border: var(--border) solid 2px;
+    border-radius: 25px;
+    background-color:#A7A7A7;
+    color: white;   
+    z-index: 5;
+}
+
+.noM {
+    margin: 1vh;
+}
+
+#username{
+    margin: 1vh;
+    font-size: 48px;
+}
+
+#email{
+    font-size: 32px;
+}
+
+.gachaScreen {
+    display: none;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #2e405286;
+    
+}
+
+#BannerSelect{
+    position : absolute;
+    top:14vh;
+    left: 6vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    width: 120px;
+    height: 50px;
+    border: var(--border) solid 2px;
+    border-radius: 25px;
+    background-color:#412234;
+    color: white;   
+    z-index: 5;
+}
+
+#BannerSelect:hover{
+    background-color: #A7A7A7;
+    transition: 0.3s;
+}
+
+#rewardImage{
+    margin-left: 2vw;
+    margin-top: 5vh;
+    height: 74%;
+    width: 50%;
+    background-repeat: no-repeat;
+}

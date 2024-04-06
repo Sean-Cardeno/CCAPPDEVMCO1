@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Open+Sans&display=swap');
+
+
+body{
+    background-color:rgb(252, 251, 246);
+    display:flex;
+}
+
+.intro-container{
+    margin-top: 80px;
+    width:60%;
+    margin-left:20px;
+    overflow-x: hidden;
+    align-items: center;
+    justify-content: center;
+    border: 5px solid;
+    border-style:outset;
+    border-radius:10px;
+    border-spacing: 50px;
+    border-color:rgb(124, 124, 124);
+    background-color:#ffc8577F;
+}
+
+.header1{
+    font-family: "Montserrat";
+    color:rgb(0, 0, 0);
+    font-size: 100px;
+    font-weight: bold;
+}
+
+.desc-alt{
+    font-family: "Montserrat";
+    color:rgb(50, 55, 59);
+    font-size: 18px;
+    font-weight:bold;
+}
+.desc1{
+    font-family: "Open Sans";
+    color:rgb(50, 55, 59);
+    font-size: 40px;
+    font-weight:bold;
+}
+
+.desc2{
+    font-family: "Open Sans";
+    color:rgb(50, 55, 59);
+    font-size: 22px;
+    font-weight:bold;
+}
+
+.desc3{
+    font-family: "Open Sans";
+    color:rgb(50, 55, 59);
+    font-size: 40px;
+    font-weight:bold;
+}
+
+.headersect{
+    margin-bottom:50px;
+    text-align: center;
+
+}
+
+.list{
+    margin:20px;
+
+}
+
+.descsection{
+    width: 90%;
+    margin-left:20px;
+    border-style:hidden;
+}
+
+
+.register-container{
+    margin-top: 200px;
+    margin-bottom:110px;
+    width:25%;
+    margin-left:110px;
+    align-items: center;
+    justify-content: left;
+    display: flex;
+    flex-direction: column;
+    border: 5px solid;
+    border-style:outset;
+    border-radius:10px;
+    border-spacing: 50px;
+    border-color:rgb(124, 124, 124);
+    background-color:#ffc8577F;
+
+}
+
+.registerbox{
+    width:100%;
+    margin-left:10px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+#register button{
+    padding:10px;
+    margin-top: 10px;
+    margin-bottom:10px;
+    width:96%;
+    color: rgb(0, 0, 0);
+    background-color: #71e28d;
+    border:none;
+    border-radius: 4px;
+    transition: bakground-color 0.3, transform 0.3s, box-shadow 0.3s;
+}
+#login button{
+    padding:10px;
+    margin-top: 10px;
+    margin-bottom:10px;
+    width:96%;
+    color: rgb(0, 0, 0);
+    background-color: #71e28d;
+    border:none;
+    border-radius: 4px;
+    transition: bakground-color 0.3, transform 0.3s, box-shadow 0.3s;
+}
+
+#login button:hover {
+    background-color: #42da68;
+    transform: translateY(-2px);
+    box-shadow: 0 4px  8px rgba(0, 0, 0, 0.2);
+}
+
+#login button:active {
+    background-color: #2fa84e;
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+#register button:hover {
+    background-color: #42da68;
+    transform: translateY(-2px);
+    box-shadow: 0 4px  8px rgba(0, 0, 0, 0.2);
+}
+
+#register button:active {
+    background-color: #2fa84e;
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.input-control{
+    display: flex;
+    flex-direction: column;
+}
+
+.input-control input{
+    border: 1px;
+    border-radius: 2px;
+    display: block;
+    font-size: 12px;
+    padding: 10px;
+    width: 92%;
+}
+.input-control input:focus {
+    outline: 0;
+}
+
+.input-control.success input {
+    border-color: #09c372;
+}
+
+.input-control.error input {
+    border-color: #ff3860;
+}
+
+.input-control .error {
+    color: #ff3860;
+    font-size: 9px;
+    height: 13px;
+}

@@ -1,0 +1,170 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <link rel="icon" type="image/x-icon" href="PlaceHolderIMG.png">
+    <title>Home</title>
+</head>
+
+<body>
+    <header>
+        <h2 class="logo">Gambler Goals</h2>
+        <nav class="navigation">
+            <button class="cal-btn" onclick="goToCalendar()">Calendar</button>
+            <button class="char-btn" onclick="goToCharacters()">Characters</button>
+            <button class="gatcha-btn" onclick="goToGacha()">Gatcha</button>
+            <button class="store-btn" onclick="goToStore()">Store</button>
+        </nav>
+        <div class="profile">
+            <button class="profile-btn" onclick="openProfileModal()">Profile</button>
+        </div>
+    </header>
+
+    <!-- <main class="table">
+            <section class="table-header">
+                <h1>To-Do's</h1>
+            </section>
+            <section class="table-body">
+                <table>
+                    <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>Due</th>
+                                <th>Status</th>
+                            </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>MCO1 Project Deadline</td>
+                            <td>Feb 12, 2024</td>
+                            <td>
+                                <p class="status complete"> Complete</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mini Challenge 2</td>
+                            <td>Feb 26, 2024</td>
+                            <td>
+                                <p class="status not-started">Not Started</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>MCO2 Project Deadline</td>
+                            <td>Feb 27, 2024</td>
+                            <td>
+                                <p class="status in-progress">In Progress</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mini Challenge 3</td>
+                            <td>Feb 28, 2024</td>
+                            <td>
+                               <p class="status not-started">Not Started</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>MCO3 Project Deadline</td>
+                            <td>Feb 29, 2024</td>
+                            <td>
+                                <p class="status in-progress">In Progress</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main> -->
+    <div class="app">
+        <h4 class="mb-3">Todo List</h4>
+        <div id="addNew" data-bs-toggle="modal" data-bs-target="#form">
+            <span class="add_new">
+                <h2>Add Assignments</h2>
+            </span>
+            <!-- <i class="fa-solid fa-plus"></i> -->
+            <svg class="plus-button" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                <path fill="#ffffff"
+                    d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+            </svg>
+        </div>
+
+
+        <h2 class="text-center my-3">Tasks</h5>
+
+
+            <!-- Modal -->
+            <form class="modal fade" id="form" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Task</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Task Title</p>
+                            <input class="form-control" type="text" name="" id="textInput">
+                            <div id="msg"></div>
+                            <br>
+                            <p>Due Date</p>
+                            <input class="form-control" type="date" name="" id="dateInput">
+                            <br>
+                            <p>Description</p>
+                            <textarea class="form-control" id="textArea" cols="30" rows="5"></textarea>
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button class="btn" data-bs-toggle="modal" data-bs-target="#form">Add Assignment</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div id="tasks">
+            </div>
+    </div>
+
+    <div class="events">
+        <main class="events-table">
+            <section class="event-header">
+                <h1>Events</h1>
+            </section>
+            <section class="table-body">
+                <table>
+                    <td>No events, no worries. Something's brewing!</td>
+                </table>
+            </section>
+        </main>
+    </div>
+    <main class="dailies">
+        <section class="table-body">
+            <h1>Dailies</h1>
+            <table>
+                <td>Accomplish one task</td>
+            </table>
+        </section>
+    </main>
+
+    <!-- Profile button -->
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="profile-modal">
+        <div class="profile-modal-content">
+            <span class="profile-modal-close" onclick="closeProfileModal()">&times;</span>
+            <h2>Profile</h2>
+            <p><strong>Name:</strong> <span id="profileName"></span></p>
+            <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+            <p><strong>Date Created:</strong> <span id="profileDateCreated"></span></p>
+            <p><strong>Tasks Completed:</strong> <span id="profileTasksCompleted"></span></p>
+            <p><strong>Coins:</strong> <span id="coins"></span></p>
+            <button onclick="logout()" class="btn btn-danger">Logout</button>
+        </div>
+    </div>
+    <script defer src="main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

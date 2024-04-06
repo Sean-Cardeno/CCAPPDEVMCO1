@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Practice mini challenge">
+        <link href="StoreStyle.css" rel="stylesheet" type="text/css">
+        <link rel="icon" href="PlaceHolderIMG.png" type="image/x-icon">
+        <title>Gacha</title>
+
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous">
+        </script>
+        
+    </head>
+    <body>
+
+        <div id="profilePop">
+            <p id="username" ></p>
+            <p id="email" class="noM"></p>
+            <p id="bio" class="noM"><br>Bio: Lorem ipsum dolor sit amet</p>
+            <p id="tasks" class="noM"></p>
+            <p id="totalRolls" class="noM"></p>
+            <p id="5Pity" class="noM"></p>
+            <p id="4Pity" class="noM"></p>
+
+        </div>
+        
+
+        <div class="currency" id="rolls">Rolls</div>
+        <div class="currency" id="credits">Credits</div>
+        <div class="top">
+            <div class="titleHolder">
+                    <h1 class='title'>Gambler Goals</h1>
+            </div>
+            <div class="buttonHolder">
+                <div class="calendar button">
+                    <p class="buttonText">Main</p>
+                    <a href="main.html" class="clickable"></a>
+                </div>
+                <div class="character button">
+                    <p class="buttonText">Character</p>
+                    <a href="Character.html" class="clickable"></a>
+                </div>
+                <div class="gacha button">
+                    <p class="buttonText">Gacha</p>
+                    <a href="gacha.html" class="clickable"></a>
+                </div>
+                <div class="store button">
+                    <p class="buttonText">Store</p>
+                </div>
+
+                <div class="profile button" id="profile">
+                    <p class="buttonText" id="profileText"></p>
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="mainHolder">
+            <div class="charHolder">
+                
+                
+            </div>
+            <div class="mainDiv">
+                <div class="backPlate"></div>
+                <div class="charHolder2" id="charHolder">
+
+
+                    <div class="charBox orange"id="1">
+                        <div class="actionButton" id="1000">buy</div>
+                        <div class="StoreImage"></div>
+                        <div class="CharName">Roll ticket <br><em class="stars"></em></div>
+                        <div class="CharDesc">Price: 1000 <br>1 roll how bad could it be?</div>
+                        
+                    </div>
+
+                    <div class="charBox orange"id="10">
+                        <div class="actionButton"id="9500">buy</div>
+                        <div class="StoreImage"></div>
+                        <div class="CharName">Roll ticket x10<br><em class="stars"></em></div>
+                        <div class="CharDesc">Price: 9500 <br>SAVE 500 Credits!</div>
+                        
+                    </div>
+
+                    <div class="charBox orange"id="20">
+                        <div class="actionButton"id="18500">buy</div>
+                        <div class="StoreImage"></div>
+                        <div class="CharName">Roll ticket x20<br><em class="stars"></em></div>
+                        <div class="CharDesc">Price: 18500 <br>SAVE 1500 Credits!</div>
+                        
+                    </div>
+
+                    <div class="charBox orange" id="50">
+                        <div class="actionButton" id="45500">buy</div>
+                        <div class="StoreImage"></div>
+                        <div class="CharName">Roll ticket x50<br><em class="stars"></em></div>
+                        <div class="CharDesc">Price: 45500 <br>SAVE 4500 Credits!</div>
+                        
+                    </div>
+
+                    <div class="charBox orange" id="100">
+                        <div class="actionButton" id="90000">buy</div>
+                        <div class="StoreImage"></div>
+                        <div class="CharName">Roll ticket x100<br><em class="stars"></em></div>
+                        <div class="CharDesc">Price: 90000 <br>SAVE 10000 Credits!</div>
+                        
+                    </div>
+
+                </div>
+                <div class="sides sRight"></div>
+                <div class="sides sLeft"></div>
+            </div>
+
+            
+        </div>
+
+        <div class="gachaScreen" id="rewardScreen"></div>
+
+        <script src="store.js"></script>
+    </body>
+    
+</html>
+
