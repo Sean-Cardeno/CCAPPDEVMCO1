@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - GamblerGoals</title>
+    <link rel="stylesheet" href="reg-page.css">
+    <link rel="icon" type="image/x-icon" href="PlaceHolderIMG.png">
+    <script src="reg-page.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="header-logo-title">
+            <a href="landingpage.html" class="logo">
+                <img src="PlaceHolderIMG.png" alt="Logo">
+            </a>
+            <h2>GamblerGoals</h2>
+        </div>
+        <div class="navigation">
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </div>
+    </header>
+    <div class="content">
+        <div class="registration-container">
+            <h2>Register</h2>
+            <form id="registrationForm" method="post">
+                <input type="email" id="email" name="email" required placeholder="Email">
+                <input type="text" id="reg-username" name="username" required placeholder="Username">
+                <input type="password" id="reg-password" name="password" required placeholder="Password">
+                <input type="password" id="confirm-password" required placeholder="Confirm Password">
+                <button type="submit">Create Account</button>
+            </form>
+            <p>Already have an account? <a href="/">Login</a></p>
+        </div>
+    </div>
+    <script src="reg-page.js"></script>
+</body>
+
+</html>

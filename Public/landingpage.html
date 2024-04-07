@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GamblerGoals</title>
+    <link rel="stylesheet" href="landingpage.css">
+    <link rel="icon" type="image/x-icon" href="PlaceHolderIMG.png">
+</head>
+
+<body>
+    <header>
+        <div class="header-logo-title">
+            <a href="landingpage.html" class="logo">
+                <img src="PlaceHolderIMG.png" alt="Logo">
+            </a>
+            <h2>GamblerGoals</h2>
+        </div>
+        <div class="navigation">
+            <a href="javascript:void(0)" onclick="openAbout()">About</a>
+            <a href="javascript:void(0)" onclick="openContact()">Contact</a>
+        </div>
+    </header>
+    <div class="content-container">
+        <div class="main-content">
+            <div class="info">
+                <h2>GamblerGoals<br>
+                    <subtitle>Where Productivity Meets Fun !</subtitle></br>
+                </h2>
+                <p>
+                    Enter a world where organizing tasks turns into an exciting journey to self improvement !
+                    <u>GamblerGoals is not just a task organizer</u>; it's a unique experience that blends the
+                    practicality of traditional task management
+                    with the thrill of a gacha-style game.
+                </p>
+                <h3>
+                    What's Inside ?
+                </h3>
+                <li>
+                    Effortless Task Management: Create, track, and prioritize your tasks with ease. Set deadlines
+                    manage your progress, and stay on top of your game.
+                </li>
+                <li>
+                    Engaging Gacha Simulator: Complete tasks and earn rolls to unlock collectible characters from
+                    various franchises. The more tasks you conquer, the richer your collection!</li>
+                <li>Weekly Challenges: Embark on weekly quests for an extra thrill. Each challenge is a chance to
+                    prove your dedication and spice up your routine.</li>
+                <li>Rewarding Experience System: Gain experience points for task completion. Use them to enhance
+                    your profile or increase your chances of winning favorite characters.</li>
+                <li>Progress Tracking: View your task history and performance. Celebrate your progress with
+                    personalized feedback and see how much MORE PRODUCTIVE you've become!</li>
+            </div>
+        </div>
+        <div class="login-section">
+            <div class="login-container">
+                <div class="login-box">
+                    <h2>Login</h2>
+                    <form id="loginForm" method="POST">
+                        <input type="text" id="email" name="email" required placeholder="Email">
+                        <span class="error-message" id="email-error"></span>
+                        <input type="password" id="password" name="password" required placeholder="Password">
+                        <span class="error-message" id="password-error"></span>
+
+                        <button type="submit">Log-in</button>
+                        <p>Don't have an account ? <a href="/register" id="register">Register</a></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal" id="aboutModal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeAbout()">&times;</span>
+            <h2>About GamblerGoals</h2>
+            <p>This page lists all NPM packages and third-party libraries used in GamblerGoals.</p>
+            <div class="packages-list">
+                <h3>NPM Packages:</h3>
+                <ul>
+                    <li>Express</li>
+                    <li>Mongoose</li>
+                    <li>Cors</li>
+                    <li>Bcryptjs</li>
+                    <!--Add more -->
+                </ul>
+            </div>
+            <div class="libraries-list">
+                <h3>Third-Party Libraries:</h3>
+                <ul>
+                    None
+                    <!-- Add more -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeContact()">&times;</span>
+            <h2>Contact Us</h2>
+            <p>Do you have questions or feedback? Get in touch with us at <b>GamblerGoalsSupport@gmail.com</b></p>
+        </div>
+    </div>
+
+
+
+    <script src="modal-window.js"></script>
+    <script src="landingpage.js"></script>
+
+</body>
+
+</html>

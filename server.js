@@ -1,65 +1,106 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
 const cors = require('cors');
 const path = require('path');
+const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+require('dotenv').config();
 
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.use(express.static(__dirname));
-
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+const UserData = require('./Public/userData');
+const Task = require('./Public/tasks');
 
 mongoose.connect('mongodb+srv://vraiz:123@ccapdevmco.3w1lh3c.mongodb.net');
 
-// Import the userData schema
-const UserData = require('./userData'); // Assuming the file is named userData.js and is in the same directory
-const Task = require('./tasks');
-const Items = require('./inventory');
-// Register Account
-app.post('/register', async (req, res) => {
-    try {
-        const { userName, userPassword, email } = req.body;
 
-        // Check if user exists
-        let user = await UserData.findOne({ userName });
-        if (user) {
-            return res.status(400).send('Username already exists');
+passport.use(new LocalStrategy(UserData.authenticate()));
+passport.serializeUser(UserData.serializeUser());
+passport.deserializeUser(UserData.deserializeUser());
+// Route for user registration
+app.post('/register', (req, res) => {
+    const { username, password, email } = req.body;
+    const newUser = new UserData({ email, username });
+    UserData.register(newUser, password, (err, user) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ success: false, message: "Error registering user" });
         }
-
-        // Hash password and create user
-        const hashedPassword = await bcrypt.hash(userPassword, 10);
-        user = new UserData({ userName, userPassword: hashedPassword, email });
-        await user.save();
-        console.log("New user registered: ", user);
-        res.status(201).send('User created successfully');
-    } catch (err) {
-        res.status(500).send('Server error');
-        console.log("Error: ", err);
-    }
-});
-
-app.post('/login', async (req, res) => {
-    const { email, userPassword } = req.body;
-
-    try {
-        let user = await UserData.findOne({ email });  // Changed from userName to email
-        if (user && await bcrypt.compare(userPassword, user.userPassword)) {
-            res.json({ success: true, userID: user._id }); // Send success status and userID
-        } else {
-            res.json({ success: false });
-        }
-    } catch (err) {
-        res.status(500).send('Server error');
-    }
+        passport.authenticate("local")(req, res, () => {
+            res.status(201).json({ success: true, message: "User created successfully" })
+            res.redirect("/main");
+        });
+    });
 });
 
 
+app.post("/login", passport.authenticate("local", {
+    successRedirect: "/main",
+    failureRedirect: "/login",
+}));
 
-app.post('/createTask', async (req, res) => {
+app.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/');
+});
+
+
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, './Public/reg-page.html'));
+});
+
+
+// Middleware to check if user is authenticated
+function isAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        console.log("User is not authenticated. Redirecting to login page.");
+        return res.redirect('/'); // Redirect to login page
+    }
+}
+
+// Route for Character.html
+app.get('/Character', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, 'Protected/Character.html'));
+});
+
+// Route for Calendar.html
+app.get('/Calendar', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, 'Protected/Calendar.html'));
+});
+
+// Route for gacha.html
+app.get('/gacha', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, 'Protected/gacha.html'));
+});
+
+// Route for main.html
+app.get('/main', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, 'Protected/main.html'));
+});
+
+// Route for Store.html
+app.get('/Store', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, 'Protected/Store.html'));
+});
+
+
+
+
+
+app.post('/createTask', isAuthenticated, async (req, res) => {
     try {
         const { userID, taskName, taskDesc, taskDateDue, taskCreditsReward } = req.body;
         console.log("Task data received from frontend:", req.body);
@@ -79,17 +120,8 @@ app.post('/createTask', async (req, res) => {
     }
 });
 
-
-app.use(express.static(path.join(__dirname, 'public'), {
-    setHeaders: (res, path, stat) => {
-        if (path.endsWith('.css')) {
-            res.setHeader('Content-Type', 'text/css');
-        }
-    }
-}));
-
 // Update task endpoint
-app.put('/updateTask/:taskID', async (req, res) => {
+app.put('/updateTask/:taskID', isAuthenticated, async (req, res) => {
     const { taskID } = req.params;
     const { taskName, taskDesc, taskDateDue } = req.body;
 
@@ -107,11 +139,11 @@ app.put('/updateTask/:taskID', async (req, res) => {
 });
 
 // Delete task endpoint
-app.patch('/deleteTask/:taskID', async (req, res) => {
+app.patch('/deleteTask/:taskID', isAuthenticated, async (req, res) => {
     const { taskID } = req.params;
 
     try {
-        const updatedTask = await Task.findByIdAndUpdate(taskID, 
+        const updatedTask = await Task.findByIdAndUpdate(taskID,
             { isTaskDeleted: true },
             { new: true } // This option returns the document after update was applied.
         );
@@ -129,7 +161,7 @@ app.patch('/deleteTask/:taskID', async (req, res) => {
 
 
 
-app.get('/getTasks', async (req, res) => {
+app.get('/getTasks', isAuthenticated, async (req, res) => {
     try {
         const userID = req.query.userID;
         if (!userID) {
@@ -143,7 +175,7 @@ app.get('/getTasks', async (req, res) => {
         res.status(500).send('Server error');
     }
 });
-app.get('/getTask/:taskID', async (req, res) => {
+app.get('/getTask/:taskID', isAuthenticated, async (req, res) => {
     try {
         const taskID = req.params.taskID;
         const task = await Task.findById(taskID);
@@ -161,7 +193,7 @@ app.get('/getTask/:taskID', async (req, res) => {
 
 
 
-app.get('/tasks/getUser/:userID', async (req, res) => {
+app.get('/tasks/getUser/:userID', isAuthenticated, async (req, res) => {
     try {
         const userID = req.params.userID;
         const tasks = await Task.find({ userID });
@@ -172,7 +204,7 @@ app.get('/tasks/getUser/:userID', async (req, res) => {
     }
 });
 
-app.get('/getUserData/:userID', async (req, res) => {
+app.get('/getUserData/:userID', isAuthenticated, async (req, res) => {
     try {
         const userID = req.params.userID;
         const userData = await UserData.findById(userID); // Use UserData, not userData
@@ -188,7 +220,7 @@ app.get('/getUserData/:userID', async (req, res) => {
     }
 });
 
-app.get('/userdatas/:userID', async (req, res) => {
+app.get('/userdatas/:userID', isAuthenticated, async (req, res) => {
     try {
         const userID = req.params.userID;
         const userData = await UserData.findById(userID);
@@ -205,8 +237,16 @@ app.get('/userdatas/:userID', async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'landingpage.html'));
+    res.sendFile(path.join(__dirname, 'Public/landingpage.html'));
 });
+
+app.use(express.static(path.join(__dirname, 'Public'), {
+    setHeaders: (res, path, stat) => {
+        if (path.endsWith('.css')) {
+            res.setHeader('Content-Type', 'text/css');
+        }
+    }
+}));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
