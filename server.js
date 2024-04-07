@@ -61,13 +61,14 @@ app.post('/login', async (req, res) => {
 
 app.post('/createTask', async (req, res) => {
     try {
-        const { userID, taskName, taskDesc, taskDateDue } = req.body;
+        const { userID, taskName, taskDesc, taskDateDue, taskCreditsReward } = req.body;
         console.log("Task data received from frontend:", req.body);
         const newTask = new Task({
             userID,
             taskName,
             taskDesc,
-            taskDateDue
+            taskDateDue,
+            taskCreditsReward,
         });
 
         await newTask.save();
@@ -106,14 +107,22 @@ app.put('/updateTask/:taskID', async (req, res) => {
 });
 
 // Delete task endpoint
-app.delete('/deleteTask/:taskID', async (req, res) => {
+app.patch('/deleteTask/:taskID', async (req, res) => {
     const { taskID } = req.params;
 
     try {
-        await Task.findByIdAndDelete(taskID);
-        res.send('Task deleted successfully');
+        const updatedTask = await Task.findByIdAndUpdate(taskID, 
+            { isTaskDeleted: true },
+            { new: true } // This option returns the document after update was applied.
+        );
+
+        if (!updatedTask) {
+            return res.status(404).send('Task not found');
+        }
+
+        res.json({ message: 'Task marked as deleted successfully', task: updatedTask });
     } catch (err) {
-        console.error("Error deleting task: ", err);
+        console.error("Error marking task as deleted: ", err);
         res.status(500).send('Server error');
     }
 });

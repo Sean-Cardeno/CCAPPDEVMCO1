@@ -63,11 +63,14 @@ let formValidation = () => {
   let dateInput = document.getElementById("dateInput");
   let textArea = document.getElementById("textArea");
   let msg = document.getElementById("msg");
+  let difficulty = document.getElementById("difficulty")
 
   if (textInput.value === "") {
     msg.innerHTML = "Task cannot be blank!";
   } else if (dateInput.value === "") {
     msg.innerHTML = "Due Date cannot be blank!";
+  } else if (difficulty.value === "Choose a Difficulty") {
+    msg.innerHTML = "You must choose a difficulty!";
   } else {
     msg.innerHTML = "";
     if (currentTaskID) {
@@ -83,12 +86,14 @@ let createNewTask = () => {
   let textInput = document.getElementById("textInput");
   let dateInput = document.getElementById("dateInput");
   let textArea = document.getElementById("textArea");
+  let difficulty = document.getElementById("difficulty");
 
   const taskData = {
-    userID: userID,
+    userID,
     taskName: textInput.value,
     taskDesc: textArea.value,
-    taskDateDue: dateInput.value
+    taskDateDue: dateInput.value,
+    taskCreditsReward: difficulty.value,
   };
 
   fetch('http://localhost:3000/createTask', {
@@ -98,22 +103,23 @@ let createNewTask = () => {
     },
     body: JSON.stringify(taskData),
   })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to create task');
-      }
-      return response.json();
-    })
-    .then(data => {
-      alert('Task created successfully');
-      displayTasks();
-      resetForm();
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('An error occurred while creating the task');
-    });
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Failed to create task');
+    }
+    return response.json();
+  })
+  .then(data => {
+    alert('Task created successfully');
+    displayTasks();
+    resetForm();
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('An error occurred while creating the task');
+  });
 };
+
 
 let updateTask = (taskID) => {
   let textInput = document.getElementById("textInput");
@@ -153,7 +159,7 @@ let updateTask = (taskID) => {
 // Delete task
 let deleteTask = (taskID) => {
   fetch(`http://localhost:3000/deleteTask/${taskID}`, {
-    method: 'DELETE',
+    method: 'PATCH',
   })
     .then(response => {
       if (!response.ok) {
@@ -248,6 +254,9 @@ function displayTasks() {
     .then(response => response.json())
     .then(tasks => {
       tasks.forEach(task => {
+        // Skip tasks marked as deleted
+        if (task.isTaskDeleted) return;
+
         const taskElement = document.createElement("div");
         taskElement.id = `task-${task._id}`;
 
@@ -265,10 +274,10 @@ function displayTasks() {
 
         const editButton = document.createElement("button");
         editButton.textContent = "Edit";
-        editButton.setAttribute("type", "button"); // Ensure it's not a submit button
-        editButton.setAttribute("data-bs-toggle", "modal"); // Add data-toggle attribute
-        editButton.setAttribute("data-bs-target", "#form"); // Add data-target attribute
-        editButton.setAttribute("data-task-id", task._id); // Add data-task-id attribute
+        editButton.setAttribute("type", "button");
+        editButton.setAttribute("data-bs-toggle", "modal");
+        editButton.setAttribute("data-bs-target", "#form");
+        editButton.setAttribute("data-task-id", task._id);
         editButton.classList.add("edit-btn");
         editButton.addEventListener("click", () => editTask(task._id));
         taskElement.appendChild(editButton);
@@ -285,4 +294,3 @@ function displayTasks() {
       console.error('Error fetching tasks:', error);
     });
 }
-
