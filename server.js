@@ -61,7 +61,7 @@ app.post('/login', async (req, res) => {
 
 app.post('/createTask', async (req, res) => {
     try {
-        const { userID, taskName, taskDesc, taskDateDue, taskCreditsReward } = req.body;
+        const { userID, taskName, taskDesc, taskDateDue, taskCreditsReward, taskStatus } = req.body;
         console.log("Task data received from frontend:", req.body);
         const newTask = new Task({
             userID,
@@ -69,6 +69,7 @@ app.post('/createTask', async (req, res) => {
             taskDesc,
             taskDateDue,
             taskCreditsReward,
+            taskStatus,
         });
 
         await newTask.save();

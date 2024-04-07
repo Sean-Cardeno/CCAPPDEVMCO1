@@ -121,21 +121,16 @@
                                 <option value=1500>Medium</option>
                                 <option value=3000>Hard</option>
                             </select>
-                            <div id="editDropdown" class="d-none">
-                                <p>Task Status</p>
-                                <select class="form-select" aria-label="Task status">
-                                    <option selected></option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                            </div>
-                            
+                            <p>Task Status</p>
+                            <select class="form-select" aria-label="Default select example" id="statusInput">
+                                <option selected></option>
+                                <option value="Not Started">Not Started</option>
+                                <option value="Started">Started</option>
+                            </select>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
-                            <button class="btn" data-bs-toggle="modal" data-bs-target="#form">Add
-                                Assignment</button>
+                            <button type="submit" class="btn">Add Assignment</button>
                         </div>
                     </div>
                 </div>

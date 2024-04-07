@@ -54,38 +54,63 @@ function openProfileModal() {
 // Task form handling
 let form = document.getElementById("form");
 form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  formValidation();
+  e.preventDefault(); // Always prevent default form submission
+  let isFormValid = formValidation();
+
+  // Close the modal only if the form is valid
+  if (isFormValid) {
+    // Assuming Bootstrap 5, hide the modal like this:
+    var modalInstance = bootstrap.Modal.getInstance(document.getElementById('form').closest('.modal'));
+    modalInstance.hide();
+  }
+  // If form is not valid, the modal will stay open for corrections
 });
 
+
 let formValidation = () => {
+  let isValid = true; // Assume form is valid
+
   let textInput = document.getElementById("textInput");
   let dateInput = document.getElementById("dateInput");
   let textArea = document.getElementById("textArea");
   let msg = document.getElementById("msg");
   let difficulty = document.getElementById("difficulty");
+  let statusInput = document.getElementById("statusInput");
 
-  // Convert the input and today's date to Date objects for comparison
   let inputDate = new Date(dateInput.value);
   let today = new Date();
-  // Reset the time part to ensure only the date is compared
-  today.setHours(0,0,0,0);
+  today.setHours(0,0,0,0); // Reset the time part to ensure only the date is compared
 
   if (textInput.value === "") {
     msg.innerHTML = "Task cannot be blank!";
-  } else if (dateInput.value === "" || inputDate < today) { // Added check for date being before today
+    isValid = false; // Form is invalid
+  } else if (dateInput.value === "" || inputDate < today) {
     msg.innerHTML = "Due Date cannot be blank or in the past!";
+    isValid = false; // Form is invalid
   } else if (difficulty.value === "Choose a Difficulty") {
     msg.innerHTML = "You must choose a difficulty!";
+    isValid = false; // Form is invalid
+  } else if (statusInput.value === "") {
+    msg.innerHTML = "You must choose a status!";
+    isValid = false; // Form is invalid
   } else {
-    msg.innerHTML = "";
+    msg.innerHTML = ""; // Clear previous error message
+  }
+
+  // Only proceed if form is valid
+  if (isValid) {
     if (currentTaskID) {
       updateTask(currentTaskID);
     } else {
       createNewTask();
     }
+    return true; // Indicate that form processing should continue
   }
+
+  // Prevent modal from closing by not calling hide function
+  return false; // Indicate form is not valid
 };
+
 
 let createNewTask = () => {
   let userID = localStorage.getItem('currentUserID');
@@ -93,6 +118,7 @@ let createNewTask = () => {
   let dateInput = document.getElementById("dateInput");
   let textArea = document.getElementById("textArea");
   let difficulty = document.getElementById("difficulty");
+  let statusInput = document.getElementById("statusInput")
 
   const taskData = {
     userID,
@@ -100,6 +126,7 @@ let createNewTask = () => {
     taskDesc: textArea.value,
     taskDateDue: dateInput.value,
     taskCreditsReward: difficulty.value,
+    taskStatus: statusInput.value,
   };
 
   fetch('http://localhost:3000/createTask', {
@@ -258,48 +285,59 @@ function displayTasks() {
   tasksContainer.innerHTML = ''; // Clear existing tasks
 
   fetch(`http://localhost:3000/getTasks?userID=${userID}`)
-    .then(response => response.json())
-    .then(tasks => {
-      tasks.forEach(task => {
-        // Skip tasks marked as deleted
-        if (task.isTaskDeleted) return;
+      .then(response => response.json())
+      .then(tasks => {
+          tasks.forEach(task => {
+              // Skip tasks marked as deleted
+              if (task.isTaskDeleted) return;
 
-        const taskElement = document.createElement("div");
-        taskElement.id = `task-${task._id}`;
+              const taskElement = document.createElement("div");
+              taskElement.id = `task-${task._id}`;
 
+              const taskNameHeader = document.createElement("h3");
+              taskNameHeader.textContent = task.taskName;
+              taskElement.appendChild(taskNameHeader);
 
+              const taskDescParagraph = document.createElement("p");
+              taskDescParagraph.textContent = task.taskDesc;
+              taskElement.appendChild(taskDescParagraph);
 
-        const taskNameHeader = document.createElement("h3");
-        taskNameHeader.textContent = task.taskName;
-        taskElement.appendChild(taskNameHeader);
+              const taskDueSpan = document.createElement("span");
+              const dueDate = new Date(task.taskDateDue);
+              const currentDate = new Date();
+              currentDate.setHours(0, 0, 0, 0); // Normalize current date to start of day for comparison
 
-        const taskDescParagraph = document.createElement("p");
-        taskDescParagraph.textContent = task.taskDesc;
-        taskElement.appendChild(taskDescParagraph);
+              // Check if the task is overdue
+              if (dueDate < currentDate) {
+                  taskDueSpan.textContent = `Due: ${dueDate.toLocaleDateString()} - Overdue`;
+                  taskDueSpan.style.color = 'red'; // Change color to red or any visual indication
+              } else {
+                  taskDueSpan.textContent = `Due: ${dueDate.toLocaleDateString()}`;
+              }
 
-        const taskDueSpan = document.createElement("span");
-        taskDueSpan.textContent = `Due: ${new Date(task.taskDateDue).toLocaleDateString()}`;
-        taskElement.appendChild(taskDueSpan);
+              taskElement.appendChild(taskDueSpan);
 
-        const editButton = document.createElement("button");
-        editButton.textContent = "Edit";
-        editButton.setAttribute("type", "button");
-        editButton.setAttribute("data-bs-toggle", "modal");
-        editButton.setAttribute("data-bs-target", "#form");
-        editButton.setAttribute("data-task-id", task._id);
-        editButton.classList.add("edit-btn");
-        editButton.addEventListener("click", () => editTask(task._id));
-        taskElement.appendChild(editButton);
+              const editButton = document.createElement("button");
+              editButton.textContent = "Edit";
+              editButton.setAttribute("type", "button");
+              editButton.classList.add("edit-btn", "btn", "btn-primary");
+              editButton.setAttribute("data-bs-toggle", "modal");
+              editButton.setAttribute("data-bs-target", "#form");
+              editButton.setAttribute("data-task-id", task._id);
+              editButton.addEventListener("click", () => editTask(task._id));
+              taskElement.appendChild(editButton);
 
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Delete";
-        deleteButton.addEventListener("click", () => deleteTask(task._id));
-        taskElement.appendChild(deleteButton);
+              const deleteButton = document.createElement("button");
+              deleteButton.textContent = "Delete";
+              deleteButton.classList.add("delete-btn", "btn", "btn-danger");
+              deleteButton.addEventListener("click", () => deleteTask(task._id));
+              taskElement.appendChild(deleteButton);
 
-        tasksContainer.appendChild(taskElement);
+              tasksContainer.appendChild(taskElement);
+          });
+      })
+      .catch(error => {
+          console.error('Error fetching tasks:', error);
       });
-    })
-    .catch(error => {
-      console.error('Error fetching tasks:', error);
-    });
 }
+

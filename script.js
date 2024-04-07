@@ -66,13 +66,23 @@ function load() {
 
                 // Filter tasks for this date and append them with class 'event'
                 const tasksForDay = tasks.filter(task => new Date(task.taskDateDue).toISOString().split('T')[0] === isoDayString);
+                // Inside the loop in the load function
                 tasksForDay.forEach(task => {
                     const taskElement = document.createElement('div');
                     taskElement.classList.add('event'); // Apply 'event' class for styling
                     taskElement.textContent = task.taskName; // Simplify for demonstration
+
+                    // Determine if the task is overdue
+                    const taskDueDate = new Date(task.taskDateDue);
+                    const currentDate = new Date();
+                    currentDate.setHours(0,0,0,0); // Reset hours for accurate comparison
+
+                    if (taskDueDate < currentDate) {
+                        taskElement.classList.add('overdue'); // Add 'overdue' class for overdue tasks
+                    }
+
                     daySquare.appendChild(taskElement);
                 });
-                
             } else {
                 daySquare.classList.add('padding');
             }
