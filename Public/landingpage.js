@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = passwordElement.value;
 
             try {
-                const response = await fetch('https://localhost:3000/login', {
+                const response = await fetch('https://gamblergoals.onrender.com/login', {//test
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (error) {
                 console.error('Error during login:', error);
-                alert('An error occurred during login. Please check the console for more information.');
+                alert('An error occurred during login');
             }
         });
     }
