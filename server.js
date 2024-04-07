@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const cors = require('cors');
 const path = require('path');
-
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 const app = express();
 app.use(cors());
@@ -12,6 +13,18 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname));
 
+const mySecretKey = "78c393d28b4dd0b43208d81efb0278aacd145c45a7e8d8e474952c39a8ce4499";
+const protectedPath = path.join(__dirname, 'protected');
+app.use(session({
+    secret: mySecretKey, // Replace with a strong secret key
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({
+        mongoUrl: 'mongodb+srv://vraiz:123@ccapdevmco.3w1lh3c.mongodb.net'
+    }),
+    cookie: { secure: false, maxAge: 3600000 } // Secure should be true in production with HTTPS
+}));
+
 
 mongoose.connect('mongodb+srv://vraiz:123@ccapdevmco.3w1lh3c.mongodb.net');
 
@@ -19,6 +32,15 @@ mongoose.connect('mongodb+srv://vraiz:123@ccapdevmco.3w1lh3c.mongodb.net');
 const UserData = require('./userData'); // Assuming the file is named userData.js and is in the same directory
 const Task = require('./tasks');
 const Items = require('./inventory');
+
+function isAuthenticated(req, res, next) {
+    if (req.session.userID) {
+        return next();
+    }
+    res.redirect('/'); // Redirect to the landing page if not authenticated
+}
+
+
 // Register Account
 app.post('/register', async (req, res) => {
     try {
@@ -57,9 +79,16 @@ app.post('/login', async (req, res) => {
     }
 });
 
+app.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).send('Error logging out');
+        }
+        res.redirect('/');
+    });
+});
 
-
-app.post('/createTask', async (req, res) => {
+app.post('/createTask', isAuthenticated, async (req, res) => {
     try {
         const { userID, taskName, taskDesc, taskDateDue } = req.body;
         console.log("Task data received from frontend:", req.body);
@@ -88,7 +117,7 @@ app.use(express.static(path.join(__dirname, 'public'), {
 }));
 
 // Update task endpoint
-app.put('/updateTask/:taskID', async (req, res) => {
+app.put('/updateTask/:taskID', isAuthenticated, async (req, res) => {
     const { taskID } = req.params;
     const { taskName, taskDesc, taskDateDue } = req.body;
 
@@ -106,7 +135,7 @@ app.put('/updateTask/:taskID', async (req, res) => {
 });
 
 // Delete task endpoint
-app.delete('/deleteTask/:taskID', async (req, res) => {
+app.delete('/deleteTask/:taskID', isAuthenticated, async (req, res) => {
     const { taskID } = req.params;
 
     try {
@@ -120,7 +149,7 @@ app.delete('/deleteTask/:taskID', async (req, res) => {
 
 
 
-app.get('/getTasks', async (req, res) => {
+app.get('/getTasks', isAuthenticated, async (req, res) => {
     try {
         const userID = req.query.userID;
         if (!userID) {
@@ -134,7 +163,7 @@ app.get('/getTasks', async (req, res) => {
         res.status(500).send('Server error');
     }
 });
-app.get('/getTask/:taskID', async (req, res) => {
+app.get('/getTask/:taskID', isAuthenticated, async (req, res) => {
     try {
         const taskID = req.params.taskID;
         const task = await Task.findById(taskID);
@@ -152,7 +181,7 @@ app.get('/getTask/:taskID', async (req, res) => {
 
 
 
-app.get('/tasks/getUser/:userID', async (req, res) => {
+app.get('/tasks/getUser/:userID', isAuthenticated, async (req, res) => {
     try {
         const userID = req.params.userID;
         const tasks = await Task.find({ userID });
@@ -163,7 +192,7 @@ app.get('/tasks/getUser/:userID', async (req, res) => {
     }
 });
 
-app.get('/getUserData/:userID', async (req, res) => {
+app.get('/getUserData/:userID', isAuthenticated, async (req, res) => {
     try {
         const userID = req.params.userID;
         const userData = await UserData.findById(userID); // Use UserData, not userData
@@ -179,7 +208,7 @@ app.get('/getUserData/:userID', async (req, res) => {
     }
 });
 
-app.get('/userdatas/:userID', async (req, res) => {
+app.get('/userdatas/:userID', isAuthenticated, async (req, res) => {
     try {
         const userID = req.params.userID;
         const userData = await UserData.findById(userID);
@@ -194,6 +223,29 @@ app.get('/userdatas/:userID', async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 });
+
+app.get('/main', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(protectedPath, 'main.html'));
+});
+
+app.get('/gacha', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(protectedPath, 'gacha.html'));
+});
+
+app.get('/calendar', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(protectedPath, 'calendar.html'));
+});
+
+app.get('/store', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(protectedPath, 'store.html'));
+});
+
+app.get('/character', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(protectedPath, 'character.html'));
+});
+
+
+
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'landingpage.html'));
