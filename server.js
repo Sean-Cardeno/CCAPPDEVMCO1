@@ -29,7 +29,7 @@ app.use(session({
 mongoose.connect('mongodb+srv://vraiz:123@ccapdevmco.3w1lh3c.mongodb.net');
 
 // Import the userData schema
-const UserData = require('C:/Users/panko/Downloads/CCAPPDEVMCO1/Public/userData'); // Assuming the file is named userData.js and is in the same directory
+const UserData = require(path.join(__dirname, 'Public', 'userData')); // Assuming the file is named userData.js and is in the same directory
 const Task = require('./Public/tasks');
 const Items = require('./Public/inventory');
 
