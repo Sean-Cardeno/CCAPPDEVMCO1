@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(email);
             console.log(password);
 
-            fetch('/login', {
+            fetch('https://gamblergoals.onrender.com/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

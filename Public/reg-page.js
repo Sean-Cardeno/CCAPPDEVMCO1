@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         try {
-            const response = await fetch('/register', {
+            const response = await fetch('https://gamblergoals.onrender.com/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
