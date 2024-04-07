@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
                 const data = await response.json();
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (error) {
                 console.error('Error during login:', error);
-                alert('An error occurred during login');
+                alert('An error occurred during login. Please check the console for more information.');
             }
         });
     }
