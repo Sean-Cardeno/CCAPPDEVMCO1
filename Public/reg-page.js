@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         try {
-            const response = fetch('http://localhost:3000/register', {
+            const response = fetch('/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
