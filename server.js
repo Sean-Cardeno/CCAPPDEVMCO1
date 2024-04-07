@@ -10,7 +10,7 @@ require('dotenv').config();
 
 const app = express();
 var corsOptions = {
-    origin: 'https://yourfrontenddomain.com',
+    origin: 'https://gamblergoals.onrender.com/',
     optionsSuccessStatus: 200 // For legacy browser support
 };
 
