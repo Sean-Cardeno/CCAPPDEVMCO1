@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
-        loginForm.addEventListener('submit', (event) => {
+        loginForm.addEventListener('submit', async (event) => {
             event.preventDefault();
 
             const emailElement = document.getElementById('email');
@@ -15,33 +15,29 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = emailElement.value;
             const password = passwordElement.value;
 
-            console.log(email);
-            console.log(password);
-
-            fetch('https://gamblergoals.onrender.com/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email: email, password: password }),
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = '/main'; // Redirect to the main page on successful login
-                    } else {
-                        alert('Login failed: ' + (data.message || 'Unknown error'));
-                    }
-                })
-                .catch(error => {
-                    console.error('Error during login:', error);
-                    alert('An error occurred during login');
+            try {
+                const response = await fetch('https://gamblergoals.onrender.com/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: email, password: password }),
                 });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                if (data.success) {
+                    window.location.href = '/main'; // Redirect to the main page on successful login
+                } else {
+                    alert('Login failed: ' + (data.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error during login:', error);
+                alert('An error occurred during login');
+            }
         });
     }
 });
