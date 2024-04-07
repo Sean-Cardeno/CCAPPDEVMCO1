@@ -50,10 +50,22 @@ app.post('/register', (req, res) => {
 });
 
 
-app.post("/login", passport.authenticate("local", {
-    successRedirect: "/main",
-    failureRedirect: "/",
-}));
+app.post("/login", (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: err.message });
+        }
+        if (!user) {
+            return res.status(401).json({ success: false, message: 'Invalid credentials' });
+        }
+        req.logIn(user, (err) => {
+            if (err) {
+                return res.status(500).json({ success: false, message: err.message });
+            }
+            return res.status(200).json({ success: true, message: 'Login successful' });
+        });
+    })(req, res, next);
+});
 
 app.get('/logout', (req, res) => {
     req.logout();

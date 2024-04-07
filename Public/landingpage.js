@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = passwordElement.value;
 
             try {
-                const response = await fetch('https://gamblergoals.onrender.com/login', {
+                const response = await fetch('https://localhost:3000/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
