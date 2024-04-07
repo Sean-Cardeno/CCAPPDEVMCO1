@@ -47,7 +47,7 @@ app.post('/register', (req, res) => {
 
 app.post("/login", passport.authenticate("local", {
     successRedirect: "/main",
-    failureRedirect: "/login",
+    failureRedirect: "/",
 }));
 
 app.get('/logout', (req, res) => {
@@ -95,10 +95,6 @@ app.get('/main', isAuthenticated, (req, res) => {
 app.get('/Store', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'Protected/Store.html'));
 });
-
-
-
-
 
 app.post('/createTask', isAuthenticated, async (req, res) => {
     try {
