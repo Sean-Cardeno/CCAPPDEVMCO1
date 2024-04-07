@@ -57,8 +57,12 @@ form.addEventListener('submit', (e) => {
   e.preventDefault(); // Always prevent default form submission
   let isFormValid = formValidation();
 
-  // Close the modal only if the form is valid
   if (isFormValid) {
+    if (currentTaskID) {
+      updateTask(currentTaskID);
+    } else {
+      createNewTask();
+    }
     // Assuming Bootstrap 5, hide the modal like this:
     var modalInstance = bootstrap.Modal.getInstance(document.getElementById('form').closest('.modal'));
     modalInstance.hide();
@@ -232,6 +236,7 @@ function showModal() {
     console.error("Elements not found");
   }
 }
+
 function editTask(taskID) {
   fetch(`http://localhost:3000/getTask/${taskID}`)
     .then(response => {
@@ -246,6 +251,8 @@ function editTask(taskID) {
       document.getElementById("textInput").value = taskData.taskName;
       document.getElementById("dateInput").value = dateDue;
       document.getElementById("textArea").value = taskData.taskDesc;
+      // Set global task ID to current editing task
+      currentTaskID = taskID; // This is important
       showModal();
     })
     .catch(error => {
@@ -256,12 +263,15 @@ function editTask(taskID) {
 
 
 
+
 let resetForm = () => {
   document.getElementById("textInput").value = "";
   document.getElementById("dateInput").value = "";
   document.getElementById("textArea").value = "";
-  form.removeAttribute("data-task-id");
+  // Reset the currentTaskID
+  currentTaskID = null; // This ensures the form is reset for creation
 };
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const editButtons = document.querySelectorAll(".edit-btn");
