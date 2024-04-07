@@ -20,7 +20,7 @@ const Banner2 = [
         itemName: ['Nest ball', 'Arven', 'Kadabra'],
         itemDesc: ['Search your deck for a Basic Pokémon and put it onto your Bench', 'Search your deck for an Item card and a Pokemon Tool card', 'Stage 1 Psychic type Pokemon'],
         itemPrice: 500,
-        itemIMG: ['https://product-images.tcgplayer.com/fit-in/437x437/534446.jpg', 'https://product-images.tcgplayer.com/fit-in/437x437/509778.jpg','https://product-images.tcgplayer.com/fit-in/437x437/516269.jpg'],
+        itemIMG: ['https://product-images.tcgplayer.com/fit-in/437x437/534446.jpg', 'https://product-images.tcgplayer.com/fit-in/437x437/509778.jpg', 'https://product-images.tcgplayer.com/fit-in/437x437/516269.jpg'],
         itemRarity: 2
     },
     {
@@ -47,4 +47,4 @@ const Banner2 = [
 ]
 
 
-export {Banner1, Banner2}; 
+export { Banner1, Banner2 }; 

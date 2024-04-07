@@ -5,10 +5,10 @@ function goToCharacters() {
   window.location.href = 'Character.html';
 }
 function goToGacha() {
-  window.location.href = 'gacha.html';
+  window.location.href = '/gacha';
 }
 function goToStore() {
-  window.location.href = 'Store.html';
+  window.location.href = '/Store';
 }
 
 function logout() {

@@ -29,9 +29,9 @@ app.use(session({
 mongoose.connect('mongodb+srv://vraiz:123@ccapdevmco.3w1lh3c.mongodb.net');
 
 // Import the userData schema
-const UserData = require('./userData'); // Assuming the file is named userData.js and is in the same directory
-const Task = require('./tasks');
-const Items = require('./inventory');
+const UserData = require('C:/Users/panko/Downloads/CCAPPDEVMCO1/Public/userData'); // Assuming the file is named userData.js and is in the same directory
+const Task = require('./Public/tasks');
+const Items = require('./Public/inventory');
 
 function isAuthenticated(req, res, next) {
     if (req.session.userID) {
@@ -225,23 +225,23 @@ app.get('/userdatas/:userID', isAuthenticated, async (req, res) => {
 });
 
 app.get('/main', isAuthenticated, (req, res) => {
-    res.sendFile(path.join(protectedPath, 'main.html'));
+    res.sendFile(path.join(__dirname, 'Protected', 'main.html'));
 });
 
 app.get('/gacha', isAuthenticated, (req, res) => {
-    res.sendFile(path.join(protectedPath, 'gacha.html'));
+    res.sendFile(path.join(__dirname, 'Protected', 'gacha.html'));
 });
 
 app.get('/calendar', isAuthenticated, (req, res) => {
-    res.sendFile(path.join(protectedPath, 'calendar.html'));
+    res.sendFile(path.join(__dirname, 'Protected', 'calendar.html'));
 });
 
 app.get('/store', isAuthenticated, (req, res) => {
-    res.sendFile(path.join(protectedPath, 'store.html'));
+    res.sendFile(path.join(__dirname, 'Protected', 'store.html'));
 });
 
 app.get('/character', isAuthenticated, (req, res) => {
-    res.sendFile(path.join(protectedPath, 'character.html'));
+    res.sendFile(path.join('Protected', 'character.html'));
 });
 
 

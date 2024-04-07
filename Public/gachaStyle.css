@@ -14,16 +14,16 @@ a {
     color: #412234;
     font-style: normal;
     text-decoration: none;
-  }
+}
 
-.top{
+.top {
     display: flex;
     width: 95%;
 }
 
 .titleHolder {
     margin: 0;
-    
+
     width: 20%;
     height: 5%;
 
@@ -39,7 +39,7 @@ a {
     margin: 0;
     width: 100%;
     display: flex;
-    justify-content: space-around; 
+    justify-content: space-around;
     align-items: center;
 }
 
@@ -95,8 +95,8 @@ a {
     border-style: solid;
     background-color: rgb(255, 230, 176);
     background-image: url(Banner.png);
-    background-size:contain;
-    background-repeat:no-repeat;
+    background-size: contain;
+    background-repeat: no-repeat;
     background-position-x: -10px;
     border-radius: 5vh;
     box-shadow: 0px 4px 10px -4px #C1ACBA;
@@ -126,7 +126,7 @@ a {
     background-color: rgb(134, 134, 134);
 }
 
-.oneRoll:active{
+.oneRoll:active {
     background-color: rgb(134, 134, 134);
     color: #ffc857;
 }
@@ -145,10 +145,10 @@ a {
     align-items: center;
 
     position: relative;
-    left:30vw;
-    top:55vh;
+    left: 30vw;
+    top: 55vh;
     font-size: 24px;
-    
+
 }
 
 .reward {
@@ -166,7 +166,7 @@ a {
     position: absolute;
     font-size: 24px;
     display: none;
-    
+
 }
 
 .oneStar {
@@ -175,7 +175,7 @@ a {
 
 .twoStar {
     background-color: rgb(60, 202, 72);
-    
+
 }
 
 .threeStar {
@@ -191,43 +191,43 @@ a {
 }
 
 
-.currency{
-    position : fixed;
-    top:14vh;
+.currency {
+    position: fixed;
+    top: 14vh;
     display: flex;
     justify-content: center;
-    align-items: center;    
+    align-items: center;
     width: 120px;
     height: 50px;
     border: var(--border) solid 2px;
     border-radius: 25px;
-    background-color:#412234;
-    color: white;   
+    background-color: #412234;
+    color: white;
     z-index: 5;
 }
 
-#rolls{
-    left:80vw;
+#rolls {
+    left: 80vw;
 }
 
-#credits{
-    left:87.5vw;
+#credits {
+    left: 87.5vw;
 }
 
 
-#profilePop{
-    position : fixed;
+#profilePop {
+    position: fixed;
     display: none;
-    top:14vh;
+    top: 14vh;
     left: 25vw;
     justify-content: center;
-    align-items: center;    
+    align-items: center;
     width: 50vw;
     height: 50vh;
     border: var(--border) solid 2px;
     border-radius: 25px;
-    background-color:#A7A7A7;
-    color: white;   
+    background-color: #A7A7A7;
+    color: white;
     z-index: 5;
 }
 
@@ -235,12 +235,12 @@ a {
     margin: 1vh;
 }
 
-#username{
+#username {
     margin: 1vh;
     font-size: 48px;
 }
 
-#email{
+#email {
     font-size: 32px;
 }
 
@@ -254,31 +254,31 @@ a {
     top: 0;
     left: 0;
     background-color: #2e405286;
-    
+
 }
 
-#BannerSelect{
-    position : absolute;
-    top:14vh;
+#BannerSelect {
+    position: absolute;
+    top: 14vh;
     left: 6vw;
     display: flex;
     justify-content: center;
-    align-items: center;    
+    align-items: center;
     width: 120px;
     height: 50px;
     border: var(--border) solid 2px;
     border-radius: 25px;
-    background-color:#412234;
-    color: white;   
+    background-color: #412234;
+    color: white;
     z-index: 5;
 }
 
-#BannerSelect:hover{
+#BannerSelect:hover {
     background-color: #A7A7A7;
     transition: 0.3s;
 }
 
-#rewardImage{
+#rewardImage {
     margin-left: 2vw;
     margin-top: 5vh;
     height: 74%;

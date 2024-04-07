@@ -29,7 +29,7 @@ function handleLogin() {
             if (data.success) {
                 // Assuming your server responds with { success: true, userID: "someId" } on successful login
                 localStorage.setItem('currentUserID', data.userID);
-                window.location.href = 'main.html';
+                window.location.href = '/main';
                 // Redirect or update UI as necessary
             } else {
                 // If your server responds with { success: false } on failed login
