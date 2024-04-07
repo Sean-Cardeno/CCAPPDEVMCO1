@@ -63,12 +63,18 @@ let formValidation = () => {
   let dateInput = document.getElementById("dateInput");
   let textArea = document.getElementById("textArea");
   let msg = document.getElementById("msg");
-  let difficulty = document.getElementById("difficulty")
+  let difficulty = document.getElementById("difficulty");
+
+  // Convert the input and today's date to Date objects for comparison
+  let inputDate = new Date(dateInput.value);
+  let today = new Date();
+  // Reset the time part to ensure only the date is compared
+  today.setHours(0,0,0,0);
 
   if (textInput.value === "") {
     msg.innerHTML = "Task cannot be blank!";
-  } else if (dateInput.value === "") {
-    msg.innerHTML = "Due Date cannot be blank!";
+  } else if (dateInput.value === "" || inputDate < today) { // Added check for date being before today
+    msg.innerHTML = "Due Date cannot be blank or in the past!";
   } else if (difficulty.value === "Choose a Difficulty") {
     msg.innerHTML = "You must choose a difficulty!";
   } else {
@@ -245,6 +251,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   displayTasks();
 });
+
 function displayTasks() {
   let userID = localStorage.getItem('currentUserID');
   let tasksContainer = document.getElementById("tasks");
@@ -259,6 +266,8 @@ function displayTasks() {
 
         const taskElement = document.createElement("div");
         taskElement.id = `task-${task._id}`;
+
+
 
         const taskNameHeader = document.createElement("h3");
         taskNameHeader.textContent = task.taskName;
