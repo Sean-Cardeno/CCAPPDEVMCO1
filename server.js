@@ -1,10 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const cors = require('cors');
-const path = require('path');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const path = require('path');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const cors = require('cors');
+
+const UserData = require('./Public/userData'); // Ensure this model uses passport-local-mongoose
+const Task = require('./Public/tasks');
+const Items = require('./Public/inventory');
 
 const app = express();
 app.use(cors());
@@ -13,25 +18,24 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname));
 
-const mySecretKey = "78c393d28b4dd0b43208d81efb0278aacd145c45a7e8d8e474952c39a8ce4499";
-const protectedPath = path.join(__dirname, 'protected');
+
+const mySecretKey = "secrettt";
 app.use(session({
-    secret: mySecretKey, // Replace with a strong secret key
+    secret: mySecretKey,
     resave: false,
     saveUninitialized: true,
-    store: MongoStore.create({
-        mongoUrl: 'mongodb+srv://vraiz:123@ccapdevmco.3w1lh3c.mongodb.net'
-    }),
-    cookie: { secure: false, maxAge: 3600000 } // Secure should be true in production with HTTPS
+    cookie: { secure: false, maxAge: 3600000 } // Note: `secure: true` should be used in production with HTTPS
 }));
 
+// Passport configuration
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(UserData.authenticate()));
+passport.serializeUser(UserData.serializeUser());
+passport.deserializeUser(UserData.deserializeUser());
 
 mongoose.connect('mongodb+srv://vraiz:123@ccapdevmco.3w1lh3c.mongodb.net');
-
-// Import the userData schema
-const UserData = require(path.join(__dirname, 'Public', 'userData')); // Assuming the file is named userData.js and is in the same directory
-const Task = require('./Public/tasks');
-const Items = require('./Public/inventory');
 
 function isAuthenticated(req, res, next) {
     if (req.session.userID) {
@@ -42,50 +46,26 @@ function isAuthenticated(req, res, next) {
 
 
 // Register Account
-app.post('/register', async (req, res) => {
-    try {
-        const { userName, userPassword, email } = req.body;
+app.post('/register', (req, res) => {
+    const { email, username, password } = req.body;
 
-        // Check if user exists
-        let user = await UserData.findOne({ userName });
-        if (user) {
-            return res.status(400).send('Username already exists');
+    UserData.register(new UserData({ username: username, email: email }), password, (err, user) => {
+        if (err) {
+            return res.status(500).send(err.message);
         }
-
-        // Hash password and create user
-        const hashedPassword = await bcrypt.hash(userPassword, 10);
-        user = new UserData({ userName, userPassword: hashedPassword, email });
-        await user.save();
-        console.log("New user registered: ", user);
-        res.status(201).send('User created successfully');
-    } catch (err) {
-        res.status(500).send('Server error');
-        console.log("Error: ", err);
-    }
+        passport.authenticate('local')(req, res, () => {
+            res.status(201).send('User created successfully');
+        });
+    });
 });
 
-app.post('/login', async (req, res) => {
-    const { email, userPassword } = req.body;
-
-    try {
-        let user = await UserData.findOne({ email });  // Changed from userName to email
-        if (user && await bcrypt.compare(userPassword, user.userPassword)) {
-            res.json({ success: true, userID: user._id }); // Send success status and userID
-        } else {
-            res.json({ success: false });
-        }
-    } catch (err) {
-        res.status(500).send('Server error');
-    }
+app.post('/login', passport.authenticate('local'), (req, res) => {
+    res.json({ success: true, userID: req.user._id });
 });
 
 app.get('/logout', (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            return res.status(500).send('Error logging out');
-        }
-        res.redirect('/');
-    });
+    req.logout();
+    res.redirect('/');
 });
 
 app.post('/createTask', isAuthenticated, async (req, res) => {
@@ -142,7 +122,7 @@ app.patch('/deleteTask/:taskID', async (req, res) => {
     const { taskID } = req.params;
 
     try {
-        const updatedTask = await Task.findByIdAndUpdate(taskID, 
+        const updatedTask = await Task.findByIdAndUpdate(taskID,
             { isTaskDeleted: true },
             { new: true } // This option returns the document after update was applied.
         );
