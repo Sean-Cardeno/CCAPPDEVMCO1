@@ -55,5 +55,5 @@ const userSchema = new mongoose.Schema({
         default: 0
     }
 })
-
+userSchema.plugin(passportLocalMongoose);
 module.exports = mongoose.model("userdatas", userSchema);
