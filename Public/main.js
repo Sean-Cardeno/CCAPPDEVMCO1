@@ -1,19 +1,19 @@
 function goToCalendar() {
-  window.location.href = 'Calendar.html';
+  window.location.href = './Calendar';
 }
 function goToCharacters() {
-  window.location.href = 'Character.html';
+  window.location.href = './Character';
 }
 function goToGacha() {
-  window.location.href = 'gacha.html';
+  window.location.href = './gacha';
 }
 function goToStore() {
-  window.location.href = 'Store.html';
+  window.location.href = './Store';
 }
 
 function logout() {
   localStorage.removeItem('currentUserID');
-  window.location.href = 'landingpage.html';
+  window.location.href = './logout';
 }
 function closeProfileModal() {
   document.getElementById('profileModal').style.display = 'none';
