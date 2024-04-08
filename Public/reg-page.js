@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        fetch('http://localhost:3000/register', {
+        fetch('https://gamblergoals.onrender.com/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
