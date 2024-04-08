@@ -34,37 +34,24 @@ passport.use(new LocalStrategy(UserData.authenticate()));
 passport.serializeUser(UserData.serializeUser());
 passport.deserializeUser(UserData.deserializeUser());
 // Route for user registration
-app.post('/register', (req, res) => {
+// Route for user registration
+app.post('/register', (req, res, next) => {
     const { username, password, email } = req.body;
-    const newUser = new UserData({ username, password, email });
+    const newUser = new UserData({ username, email });
     UserData.register(newUser, password, (err, user) => {
         if (err) {
-            console.log(err);
+            console.error('Error registering user:', err);
             return res.status(500).json({ success: false, message: "Error registering user" });
         }
         passport.authenticate("local")(req, res, () => {
-            res.status(201).json({ success: true, message: "User created successfully" })
-            res.redirect("/main");
+            res.status(201).json({ success: true, message: "User created successfully" });
         });
     });
 });
 
-
-app.post("/login", (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
-        if (err) {
-            return res.status(500).json({ success: false, message: err.message });
-        }
-        if (!user) {
-            return res.status(401).json({ success: false, message: 'Invalid credentials' });
-        }
-        req.logIn(user, (err) => {
-            if (err) {
-                return res.status(500).json({ success: false, message: err.message });
-            }
-            return res.status(200).json({ success: true, message: 'Login successful' });
-        });
-    })(req, res, next);
+// Route for user login
+app.post("/login", passport.authenticate('local'), (req, res) => {
+    res.status(200).json({ success: true, message: 'Login successful' });
 });
 
 app.get('/logout', (req, res) => {
