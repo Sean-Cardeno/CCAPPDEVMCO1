@@ -10,20 +10,26 @@ function formatDateToISO(day, month, year) {
     return `${year}-${formattedMonth}-${formattedDay}`;
 }
 
-async function readData() {
-    try {
-        let rollDataR = await fetch('http://localhost:3000/tasks/getUser/' + userID); // Change from objectId to userID
-        let rollData = await rollDataR.json();
-        return rollData;
-    } catch (error) {
-        console.error("Error fetching tasks:", error);
-        return null;
-    }
+let tasksByDate = {}; // Object to hold tasks organized by their due dates
+
+function fetchTasks() {
+    return fetch(`http://localhost:3000/getTasks?userID=${userID}`)
+        .then(response => response.json())
+        .then(tasks => {
+            tasksByDate = {}; // Reset tasksByDate
+            tasks.forEach(task => {
+                const dueDate = new Date(task.taskDateDue).toISOString().split('T')[0]; // Use ISO string to avoid locale issues
+                if (!tasksByDate[dueDate]) {
+                    tasksByDate[dueDate] = [];
+                }
+                tasksByDate[dueDate].push(task);
+            });
+        })
+        .catch(error => console.error('Error fetching tasks:', error));
 }
 
-async function load() {
+function load() {
     const dt = new Date();
-    const eventForDay = await readData();
 
     if (nav !== 0) {
         dt.setMonth(new Date().getMonth() + nav);
@@ -42,46 +48,50 @@ async function load() {
     });
     const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
 
-    document.getElementById('monthDisplay').innerText =
-        `${dt.toLocaleDateString('en-us', { month: 'long' })} ${year}`;
+    document.getElementById('monthDisplay').innerText = `${dt.toLocaleDateString('en-us', { month: 'long' })} ${year}`;
 
     calendar.innerHTML = '';
 
-    for (let i = 1; i <= paddingDays + daysInMonth; i++) {
-        const daySquare = document.createElement('div');
-        daySquare.classList.add('day');
+    fetch(`http://localhost:3000/getTasks?userID=${userID}`)
+    .then(response => response.json())
+    .then(tasks => {
+        for (let i = 1; i <= paddingDays + daysInMonth; i++) {
+            const daySquare = document.createElement('div');
+            daySquare.classList.add('day');
 
-        if (i > paddingDays) {
-            const day = i - paddingDays;
-            const isoDayString = formatDateToISO(day, month + 1, year);
+            if (i > paddingDays) {
+                const day = i - paddingDays;
+                const isoDayString = formatDateToISO(day, month + 1, year);
+                daySquare.innerText = day;
 
-            daySquare.innerText = day;
+                // Filter tasks for this date and append them with class 'event'
+                const tasksForDay = tasks.filter(task => new Date(task.taskDateDue).toISOString().split('T')[0] === isoDayString);
+                // Inside the loop in the load function
+                tasksForDay.forEach(task => {
+                    const taskElement = document.createElement('div');
+                    taskElement.classList.add('event'); // Apply 'event' class for styling
+                    taskElement.textContent = task.taskName; // Simplify for demonstration
 
-            if (eventForDay) {
-                for (const event of eventForDay) {
-                    const eventDate = new Date(event.taskDateDue); // Assuming taskDateDue is the correct field for due date
-                    const eventDay = eventDate.getDate();
-                    const eventMonth = eventDate.getMonth();
-                    const eventYear = eventDate.getFullYear();
+                    // Determine if the task is overdue
+                    const taskDueDate = new Date(task.taskDateDue);
+                    const currentDate = new Date();
+                    currentDate.setHours(0,0,0,0); // Reset hours for accurate comparison
 
-                    if (eventDay === day && eventMonth === month && eventYear === year) {
-                        const eventDiv = document.createElement('div');
-                        eventDiv.classList.add('event');
-                        eventDiv.innerText = event.taskName;
-                        daySquare.appendChild(eventDiv);
+                    if (taskDueDate < currentDate) {
+                        taskElement.classList.add('overdue'); // Add 'overdue' class for overdue tasks
                     }
-                }
+
+                    daySquare.appendChild(taskElement);
+                });
+            } else {
+                daySquare.classList.add('padding');
             }
-        } else {
-            daySquare.classList.add('padding');
+
+            calendar.appendChild(daySquare);
         }
-
-        calendar.appendChild(daySquare);
-    }
+    })
+    .catch(error => console.error('Error fetching tasks:', error));
 }
-
-
-
 
 function initButtons() {
     document.getElementById('nextButton').addEventListener('click', () => {

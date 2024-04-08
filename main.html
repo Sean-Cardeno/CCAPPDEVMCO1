@@ -114,12 +114,23 @@
                             <br>
                             <p>Description</p>
                             <textarea class="form-control" id="textArea" cols="30" rows="5"></textarea>
-                            ...
+                            <p>Difficulty</p>
+                            <select class="form-select" aria-label="Default select example" id="difficulty">
+                                <option selected>Choose a Difficulty</option>
+                                <option value=500>Easy</option>
+                                <option value=1500>Medium</option>
+                                <option value=3000>Hard</option>
+                            </select>
+                            <p>Task Status</p>
+                            <select class="form-select" aria-label="Default select example" id="statusInput">
+                                <option selected></option>
+                                <option value="Not Started">Not Started</option>
+                                <option value="Started">Started</option>
+                            </select>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button class="btn" data-bs-toggle="modal" data-bs-target="#form">Add
-                                Assignment</button>
+                            <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" id="formSubmitButton" class="btn">Add Assignment</button>
                         </div>
                     </div>
                 </div>
@@ -128,6 +139,8 @@
             <div id="tasks">
             </div>
     </div>
+
+    
 
     <div class="events">
         <main class="events-table">
