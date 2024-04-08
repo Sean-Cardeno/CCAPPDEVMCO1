@@ -7,7 +7,6 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 require('dotenv').config();
 
-
 const app = express();
 var corsOptions = {
     origin: 'https://gamblergoals.onrender.com/',
@@ -33,9 +32,9 @@ mongoose.connect('mongodb+srv://vraiz:123@ccapdevmco.3w1lh3c.mongodb.net');
 passport.use(new LocalStrategy(UserData.authenticate()));
 passport.serializeUser(UserData.serializeUser());
 passport.deserializeUser(UserData.deserializeUser());
+
 // Route for user registration
-// Route for user registration
-app.post('/register', (req, res, next) => {
+app.post('/register', function (req, res, next) {
     const { username, password, email } = req.body;
     const newUser = new UserData({ username, email });
     UserData.register(newUser, password, (err, user) => {
@@ -50,14 +49,28 @@ app.post('/register', (req, res, next) => {
 });
 
 // Route for user login
-app.post("/login", passport.authenticate('local'), (req, res) => {
-    res.status(200).json({ success: true, message: 'Login successful' });
+app.post("/login", function (req, res, next) {
+    passport.authenticate('local', function (err, user, info) {
+        if (err) {
+            return res.status(500).json({ success: false, message: err.message });
+        }
+        if (!user) {
+            return res.status(401).json({ success: false, message: 'Invalid credentials' });
+        }
+        req.logIn(user, function (err) {
+            if (err) {
+                return res.status(500).json({ success: false, message: err.message });
+            }
+            return res.status(200).json({ success: true, message: 'Login successful' });
+        });
+    })(req, res, next);
 });
 
-app.get('/logout', (req, res) => {
+app.get('/logout', function (req, res, next) {
     req.logout();
     res.redirect('/');
 });
+
 
 
 app.get('/register', (req, res) => {
