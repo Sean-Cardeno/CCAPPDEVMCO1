@@ -4,15 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
         loginForm.addEventListener('submit', async (event) => {
             event.preventDefault();
 
-            const emailElement = document.getElementById('email');
+            const usernameElement = document.getElementById('username');
             const passwordElement = document.getElementById('password');
-
-            if (!emailElement || !passwordElement) {
+            console.log(usernameElement);
+            if (!usernameElement || !passwordElement) {
                 console.error('Login form elements not found!');
                 return;
             }
 
-            const email = emailElement.value;
+            const username = usernameElement.value;
             const password = passwordElement.value;
 
             try {
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ email: email, password: password }),
+                    body: JSON.stringify({ username: username, password: password }),
                 });
 
                 if (!response.ok) {
