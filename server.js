@@ -30,7 +30,7 @@ const Task = require('./Public/tasks');
 mongoose.connect('mongodb+srv://vraiz:123@ccapdevmco.3w1lh3c.mongodb.net');
 
 
-passport.use(new LocalStrategy(UserData.authenticate()));
+passport.use(new LocalStrategy({ usernameField: 'email' }, UserData.authenticate()));
 passport.serializeUser(UserData.serializeUser());
 passport.deserializeUser(UserData.deserializeUser());
 // Route for user registration
