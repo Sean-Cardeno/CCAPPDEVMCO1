@@ -233,7 +233,7 @@ app.get('/character', isAuthenticated, (req, res) => {
 
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, './Public/landingpage.html'));
+    res.sendFile(path.join(__dirname, '/landingpage.html'));
 });
 
 const PORT = process.env.PORT || 3000;
