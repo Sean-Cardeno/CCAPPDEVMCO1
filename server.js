@@ -15,7 +15,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 const mySecretKey = "secrettt";
@@ -88,8 +88,6 @@ app.post('/createTask', isAuthenticated, async (req, res) => {
     }
 });
 
-
-app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Update task endpoint
@@ -232,9 +230,6 @@ app.get('/character', isAuthenticated, (req, res) => {
 
 
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '/landingpage.html'));
-});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
