@@ -16,7 +16,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(__dirname));
 
 
 const mySecretKey = "secrettt";
@@ -90,13 +89,8 @@ app.post('/createTask', isAuthenticated, async (req, res) => {
 });
 
 
-app.use(express.static(path.join(__dirname, 'public'), {
-    setHeaders: (res, path, stat) => {
-        if (path.endsWith('.css')) {
-            res.setHeader('Content-Type', 'text/css');
-        }
-    }
-}));
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Update task endpoint
 app.put('/updateTask/:taskID', isAuthenticated, async (req, res) => {
