@@ -13,28 +13,32 @@ document.addEventListener('DOMContentLoaded', async function () {
             alert('Passwords do not match');
             return;
         }
+        const userData = {
+            email,
+            username,
+            password
+        };
 
         try {
-            const response = await fetch('https://gamblergoals.onrender.com/register', {
+            const response = await fetch('/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, username, password }),
+                body: JSON.stringify({ userData }),
             });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
             const data = await response.json();
-            alert(data.message); // Assuming the response contains a message property
-            if (data.message === 'User created successfully') {
-                window.location.href = '/';
+
+            // Handle response from the server
+            if (response.ok) {
+                alert('Registration successful!');
+                window.location.href = '/'; // Redirect to login page upon successful registration
+            } else {
+                alert(`Registration failed: ${data.message}`);
             }
         } catch (error) {
-            console.error('Error:', error.message);
-            alert('An error occurred. Please try again later.');
+            console.error('Registration error:', error);
+            alert('An error occurred during registration. Please try again.');
         }
     });
 });
