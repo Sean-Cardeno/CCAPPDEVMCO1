@@ -54,8 +54,7 @@ button {
   padding: 10px;
   height: 150px;
   cursor: pointer;
-  box-sizing: border-box;
-  background-color: 2E4052;
+  box-sizing: border-box;;
   margin: 0px;
   border: 1px solid #2E4052;
   display: flex;
@@ -152,4 +151,8 @@ button {
   height: 100vh;
   position: absolute;
   background-color: rgba(0,0,0,0.8);
+}
+
+.event.overdue {
+  background-color: #d36c6c; /* Or any color that signifies urgency or overdue status */
 }
